@@ -1,21 +1,3 @@
-(*
- * A CNF reducer                                                      25/01/2018
- *
- * function cnf : expr -> expr
- * > Reduces an expression to conjunctive normal form
- *
- * function pp : expr -> unit
- * > Pretty prints the expression
- *
- * expr_a = ((P → Q) ^ (Q → P))
- * expr_b = (((P ^ Q) v R) ^ ¬(P v Q))
- * expr_z = (((A ^ B) v (C ^ D)) v E)
- *
- * Other expression can be created using prefix notation. Consult `type expr`
- * for a list of possible AST nodes.
- *
- *)
-
 type expr =
     | ATOM of char
     | NOT of expr
@@ -49,6 +31,41 @@ let expr_24 = IMPLIES (
 let expr_x = OR(TRUE, FALSE)
 let expr_y = OR(OR(AND(ATOM 'A', ATOM 'B'), ATOM 'C'), ATOM 'D')
 let expr_z = OR(OR(AND(ATOM('A'), ATOM('B')), AND(ATOM('C'), ATOM('D'))), ATOM('E'))
+
+let expr_2013_5b = 
+    AND (
+        IMPLIES (
+            AND (
+                ATOM 'P',
+                ATOM 'R'
+            ),
+            ATOM 'Q'
+        ),
+        AND (
+            NOT (
+                AND (
+                    ATOM 'P',
+                    AND (
+                        ATOM 'Q',
+                        ATOM 'R'
+                    )
+                )
+            ),
+        AND (
+            IMPLIES (
+                OR (
+                    ATOM 'R',
+                    NOT (ATOM 'Q')
+                ),
+                ATOM 'P'
+            ),
+            IMPLIES (
+                ATOM 'P',
+                ATOM 'R'
+            )
+        )
+    )
+)
 
 
 let rec impl = function
